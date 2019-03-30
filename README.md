@@ -26,7 +26,7 @@ python3 source.py | python3
 For
 
 ```
-text = "repeat 10 print 'hello world'
+text = "repeat 10 print 'hello world'"
 ```
 
 output is:
@@ -40,7 +40,7 @@ for _ in range(10):
 For
 
 ```
-text = "repeat 3 repeat 4 print 'hello world'
+text = "repeat 3 repeat 4 print 'hello world'"
 ```
 
 output is:
