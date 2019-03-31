@@ -32,7 +32,6 @@ class MyTransformer(Transformer):
 
 with open("in.pluto") as f:
     text = "\n".join(f.readlines()).strip()
-    print(text)
 
 tree = parser.parse(text)
 
