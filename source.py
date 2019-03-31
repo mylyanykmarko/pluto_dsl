@@ -30,7 +30,10 @@ class MyTransformer(Transformer):
         return commands[0]
 
 
-text = "repeat 10 repeat 10 print 'Hello World'"
+with open("in.pluto") as f:
+    text = "\n".join(f.readlines()).strip()
+    print(text)
+
 tree = parser.parse(text)
 
 new_tree = MyTransformer().transform(tree)
