@@ -13,7 +13,7 @@ This program takes PLUTO's code as an input and returns valid Python code.
 python3 source.py
 ```
 
-This will print the python alternative for a code provided in `text` variable in `source.py`.
+This will print the python alternative for a code provided in `in.pluto`.
 
 You can execute the python code immediately with the following command:
 
@@ -23,10 +23,10 @@ python3 source.py | python3
 
 ### Examples
 
-For
+For content in file "in.pluto" : 
 
 ```
-Content in file "in.pluto" : repeat 10 print 'hello world'
+repeat 10 print 'hello world'
 ```
 
 output is:
@@ -37,7 +37,7 @@ for _ in range(10):
 ```
 ---
 
-For
+For content in file "in.pluto" : 
 
 ```
 Content in file "in.pluto" : repeat 3 repeat 4 print 'hello world'
