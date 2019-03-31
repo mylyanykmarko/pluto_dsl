@@ -40,7 +40,7 @@ for _ in range(10):
 For content in file "in.pluto" : 
 
 ```
-Content in file "in.pluto" : repeat 3 repeat 4 print 'hello world'
+repeat 3 repeat 4 print 'hello world'
 ```
 
 output is:
