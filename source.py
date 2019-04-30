@@ -2,17 +2,18 @@ from lark import Lark, Transformer
 
 grammar = """
     start: instruction+
-    instruction: repeat | log | declare | procedure | step | conferment | comparator
+    instruction: repeat | log | declare | procedure | step | conferment | comparator | comparator1
 
     procedure: "procedure" step* "end procedure"
     step: "initiate and confirm step" name activity "end step;"
     repeat: "repeat" NUMBER instruction
-    log: "log" double_quoted ";"
+    log: "log" double_quoted* "+"* name* ";"
     STRING: /[a-zA-Z0-9_.-]{2,}/
     declare: "declare" variable* "end declare"
     variable: "variable" name "of type" type
     conferment: name ":=" double_quoted ";"
     comparator: "if value of" name "!=" name "then" activity "end if;"
+    comparator1: "if" name "!=" name "then" activity "end if;"
     double_quoted: /"[^"]*"/
     name: STRING
     type: STRING
@@ -64,8 +65,16 @@ class MyTransformer(Transformer):
     def comparator(self, matches):
         return f"if {matches[0]} != {matches[1]}:\n\t\t{str(matches[2][0])}"
 
+    def comparator1(self, matches):
+        return f"if {matches[0]} != {matches[1]}:\n\t\t{str(matches[2][0])}"
+
     def log(self, matches):
-        return f"print({matches[0]})"
+        out = ""
+        for i in matches:
+            out += i + " + "
+        if out[-3:] == " + ":
+            out = out[:-3]
+        return f"print({out})"
 
     def double_quoted(self, matches):
         return str(matches[0])
