@@ -1,1 +1,17 @@
-repeat 10 repeat 10 print 'Hello World'
+procedure
+	initiate and confirm step step1
+		declare
+			variable CMD_TM_LINK_VALUE of type string,
+			variable TRSP2_RECEIVER_STATUS of type string
+		end declare
+		
+		CMD_TM_LINK_VALUE := "TM FLOW";
+		TRSP2_RECEIVER_STATUS := "TC tracking";
+			
+		if value of CMD_TM_LINK != CMD_TM_LINK_VALUE then
+			log "There is no TM FLOW.";
+		end if;
+
+	end step;
+
+end procedure
