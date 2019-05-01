@@ -12,10 +12,14 @@ procedure
 			log "There is no TM FLOW.";
 		end if;
 
-		if NTR80220 != TRSP2_RECEIVER_STATUS then
+  	 	if NTR80220 != TRSP2_RECEIVER_STATUS then
 			log "TRSP2 is " + NTR80220;
 		end if;
 
+	end step;
+
+	initiate and confirm step step2
+		initiate and confirm ZDW17001;
 	end step;
 
 end procedure

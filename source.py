@@ -2,10 +2,11 @@ from lark import Lark, Transformer
 
 grammar = """
     start: instruction+
-    instruction: repeat | log | declare | procedure | step | conferment | comparator | comparator1
+    instruction: repeat | log | declare | procedure | step | conferment | comparator | comparator1 | initialization
 
     procedure: "procedure" step* "end procedure"
     step: "initiate and confirm step" name activity "end step;"
+    initialization: "initiate and confirm" name";"
     repeat: "repeat" NUMBER instruction
     log: "log" double_quoted* "+"* name* ";"
     STRING: /[a-zA-Z0-9_.-]{2,}/
@@ -28,11 +29,13 @@ grammar = """
 
 class MyTransformer(Transformer):
     def activity(self, matches):
-        #print(len(matches))
         return matches
 
     def declare(self, matches):
-        return str(matches[0])
+        out = "\t"
+        for i in matches:
+            out += str(i) + "\n\t"
+        return "# initialization of variables\n" + out
 
     def instruction(self, matches):
         return str(matches[0])
@@ -50,20 +53,26 @@ class MyTransformer(Transformer):
             return "str()"
 
     def procedure(self, matches):
-        return str(matches[0])
+        out = ""
+        for i in matches:
+            out += "\n\t".join(i.split("\n"))
+        return "def procedure1():\n" + out
 
     def step(self, matches):
-        out = f"def {matches[0]}():\n\t"
+        out = f"\ndef {matches[0]}():\n\t"
         for i in matches[1:]:
             for j in i:
                 out += str(j) + "\n" + "\t"
-        return out
+        return out[:-1]
 
     def conferment(self, matches):
         return f"{matches[0]} = {matches[1]}"
 
     def comparator(self, matches):
-        return f"if {matches[0]} != {matches[1]}:\n\t\t{str(matches[2][0])}"
+        return f"if {matches[0]}.value != {matches[1]}:\n\t\t{str(matches[2][0])}"
+
+    def initialization(self, matches):
+        return f"{matches[0]}()"
 
     def comparator1(self, matches):
         return f"if {matches[0]} != {matches[1]}:\n\t\t{str(matches[2][0])}"
@@ -92,3 +101,6 @@ tree = parser.parse(text)
 
 p_code = MyTransformer().transform(tree)
 print(p_code)
+
+with open("out.py", "w") as f:
+    f.write(p_code)
