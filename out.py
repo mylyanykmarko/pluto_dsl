@@ -12,6 +12,10 @@ def procedure1():
 		if NTR80220 != TRSP2_RECEIVER_STATUS:
 			print("TRSP2 is " + NTR80220)
 	
+	step1()
+	
 	def step2():
 		ZDW17001()
+	
+	step2()
 	

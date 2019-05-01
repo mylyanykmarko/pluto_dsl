@@ -63,7 +63,7 @@ class MyTransformer(Transformer):
         for i in matches[1:]:
             for j in i:
                 out += str(j) + "\n" + "\t"
-        return out[:-1]
+        return out[:-1] + f"\n{matches[0]}()\n"
 
     def conferment(self, matches):
         return f"{matches[0]} = {matches[1]}"
