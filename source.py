@@ -2,7 +2,8 @@ from lark import Lark, Transformer
 
 grammar = """
     start: instruction+
-    instruction: repeat | log | declare | procedure | step | conferment | comparator | comparator1 | initialization
+    instruction: repeat | log | declare | procedure | step | assignment | ifstatement | ifstatement1 | initialization
+    | COMPARISON
 
     procedure: "procedure" step* "end procedure"
     step: "initiate and confirm step" name activity "end step;"
@@ -12,10 +13,13 @@ grammar = """
     STRING: /[a-zA-Z0-9_.-]{2,}/
     declare: "declare" variable* "end declare"
     variable: "variable" name "of type" type
-    conferment: name ":=" double_quoted ";"
-    comparator: "if value of" name "!=" name "then" activity "end if;"
-    comparator1: "if" name "!=" name "then" activity "end if;"
+    assignment: name ":=" double_quoted ";"
+    ifstatement: "if value of" name COMPARISON name "then" activity "end if;"
+    ifstatement1: "if" name COMPARISON name "then" activity "end if;"
     double_quoted: /"[^"]*"/
+    COMPARISON: ">="|"<="|">"|"<"|"=="|"!="
+    
+    
     name: STRING
     type: STRING
     activity: instruction*
@@ -65,17 +69,17 @@ class MyTransformer(Transformer):
                 out += str(j) + "\n" + "\t"
         return out[:-1] + f"\n{matches[0]}()\n"
 
-    def conferment(self, matches):
+    def assignment(self, matches):
         return f"{matches[0]} = {matches[1]}"
 
-    def comparator(self, matches):
-        return f"if {matches[0]}.value != {matches[1]}:\n\t\t{str(matches[2][0])}"
+    def ifstatement(self, matches):
+        return f"if {matches[0]}.value {matches[1]} {matches[2]}:\n\t\t{str(matches[3][0])}"
 
     def initialization(self, matches):
         return f"{matches[0]}()"
 
-    def comparator1(self, matches):
-        return f"if {matches[0]} != {matches[1]}:\n\t\t{str(matches[2][0])}"
+    def ifstatement1(self, matches):
+        return f"if {matches[0]} {matches[1]} {matches[2]}:\n\t\t{str(matches[3][0])}"
 
     def log(self, matches):
         out = ""
