@@ -3,7 +3,6 @@ from lark import Lark, Transformer
 grammar = """
     start: instruction+
     instruction: repeat | log | declare | procedure | step | assignment | ifstatement | ifstatement1 | initialization
-    | COMPARISON
 
     procedure: "procedure" step* "end procedure"
     step: "initiate and confirm step" name activity "end step;"
